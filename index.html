@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+</head>
+
+<body>
+    <div class="playing">
+        <img src="resources/playing.png" alt="" width="100" height="100">
+        <div>
+            <p>Song Name</p>
+            <P>Artist Name</P>
+        </div>
+    </div>
+
+    <div>
+        <p>
+            00:00
+            <input type="range" id="progress" value="0" min="0" max="100">
+            03:45
+        </p>
+
+
+
+    </div>
+
+    <div class="buttons">
+        <button><img src="resources/shuffle.svg" alt="shuffle"></button>
+        <button><img src="resources/skip-back.svg" alt=""></button>
+        <button><img src="resources/play.svg" alt=""></button>
+        <button><img src="resources/skip-forward.svg" alt=""></button>
+        <button><img src="resources/repeat.svg" alt=""></button>
+    </div>
+    <div>
+        <button><img src="resources/speaker-high.svg" alt=""></button>
+        <input type="range" id="volume" value="0" min="0" max="100" step="1">
+    </div>
+    <br>
+    <div class="search">
+        <input type="text" placeholder="Search">
+        <button><img src="resources/magnifying-glass.svg" alt=""></button>
+    </div>
+    <div class="list">
+
+    </div>
+    <audio id="audioPlayer"></audio>
+</body>
+
+</html>
