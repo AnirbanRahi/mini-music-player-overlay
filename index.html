@@ -5,48 +5,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="playing">
-        <img src="resources/playing.png" alt="" width="100" height="100">
-        <div>
-            <p>Song Name</p>
-            <P>Artist Name</P>
+    <div class="container">
+        <div class="playing">
+            <img src="resources/playing.png" class="playing-image" alt="">
+            <P class="artist-name">Artist Name</P>
+            <p class="song-name">Song Name</p>
+            <audio src="resources/All The Stars.mp3"></audio>
+        </div>
+
+        <div class="progress-container">
+
+            <p class="progress-time">00:00</p>
+            <input type="range" id="progress" value="0" min="0" max="100" class="progress-bar">
+            <p class="progress-time">03:45</p>
+
+        </div>
+
+        <div class="controls">
+            <!--shuffle-->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+                <path
+                    d="M237.66,178.34a8,8,0,0,1,0,11.32l-24,24A8,8,0,0,1,200,208V192a72.15,72.15,0,0,1-57.65-30.14l-41.72-58.4A56.1,56.1,0,0,0,55.06,80H32a8,8,0,0,1,0-16H55.06a72.12,72.12,0,0,1,58.59,30.15l41.72,58.4A56.08,56.08,0,0,0,200,176V160a8,8,0,0,1,13.66-5.66ZM143,107a8,8,0,0,0,11.16-1.86l1.2-1.67A56.08,56.08,0,0,1,200,80V96a8,8,0,0,0,13.66,5.66l24-24a8,8,0,0,0,0-11.32l-24-24A8,8,0,0,0,200,48V64a72.15,72.15,0,0,0-57.65,30.14l-1.2,1.67A8,8,0,0,0,143,107Zm-30,42a8,8,0,0,0-11.16,1.86l-1.2,1.67A56.1,56.1,0,0,1,55.06,176H32a8,8,0,0,0,0,16H55.06a72.12,72.12,0,0,0,58.59-30.15l1.2-1.67A8,8,0,0,0,113,149Z">
+                </path>
+            </svg>
+            <!--skib-back-->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+                <path
+                    d="M208,47.88V208.12a16,16,0,0,1-24.43,13.43L64,146.77V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0v69.23L183.57,34.45A15.95,15.95,0,0,1,208,47.88Z">
+                </path>
+            </svg>
+            <!--play-->
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ffffff" viewBox="0 0 256 256">
+                <path
+                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm40.55,110.58-52,36A8,8,0,0,1,104,164V92a8,8,0,0,1,12.55-6.58l52,36a8,8,0,0,1,0,13.16Z">
+                </path>
+            </svg>
+            <!--skib-forward-->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+                <path
+                    d="M208,40V216a8,8,0,0,1-16,0V146.77L72.43,221.55A15.95,15.95,0,0,1,48,208.12V47.88A15.95,15.95,0,0,1,72.43,34.45L192,109.23V40a8,8,0,0,1,16,0Z">
+                </path>
+            </svg>
+            <!--repeat-->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+                <path
+                    d="M24,128A72.08,72.08,0,0,1,96,56h96V40a8,8,0,0,1,13.66-5.66l24,24a8,8,0,0,1,0,11.32l-24,24A8,8,0,0,1,192,88V72H96a56.06,56.06,0,0,0-56,56,8,8,0,0,1-16,0Zm200-8a8,8,0,0,0-8,8,56.06,56.06,0,0,1-56,56H64V168a8,8,0,0,0-13.66-5.66l-24,24a8,8,0,0,0,0,11.32l24,24A8,8,0,0,0,64,216V200h96a72.08,72.08,0,0,0,72-72A8,8,0,0,0,224,120Z">
+                </path>
+            </svg>
+        </div>
+        <div class="volume">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
+                <path
+                    d="M168,32V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H85.25l69.84-54.31A8,8,0,0,1,168,32Zm32,64a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V104A8,8,0,0,0,200,96Z">
+                </path>
+            </svg>
+            <input type="range" id="volume" value="0" min="0" max="100" step="1">
+        </div>
+        <br>
+        <div class="search">
+            <p>Library</p>
+            <div class="search-box">
+                <input type="text" placeholder="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
+                    <path
+                        d="M168,112a56,56,0,1,1-56-56A56,56,0,0,1,168,112Zm61.66,117.66a8,8,0,0,1-11.32,0l-50.06-50.07a88,88,0,1,1,11.32-11.31l50.06,50.06A8,8,0,0,1,229.66,229.66ZM112,184a72,72,0,1,0-72-72A72.08,72.08,0,0,0,112,184Z">
+                    </path>
+                </svg>
+            </div>
+        </div>
+        <div class="list">
         </div>
     </div>
-
-    <div>
-        <p>
-            00:00
-            <input type="range" id="progress" value="0" min="0" max="100">
-            03:45
-        </p>
-
-
-
-    </div>
-
-    <div class="buttons">
-        <button><img src="resources/shuffle.svg" alt="shuffle"></button>
-        <button><img src="resources/skip-back.svg" alt=""></button>
-        <button><img src="resources/play.svg" alt=""></button>
-        <button><img src="resources/skip-forward.svg" alt=""></button>
-        <button><img src="resources/repeat.svg" alt=""></button>
-    </div>
-    <div>
-        <button><img src="resources/speaker-high.svg" alt=""></button>
-        <input type="range" id="volume" value="0" min="0" max="100" step="1">
-    </div>
-    <br>
-    <div class="search">
-        <input type="text" placeholder="Search">
-        <button><img src="resources/magnifying-glass.svg" alt=""></button>
-    </div>
-    <div class="list">
-
-    </div>
-    <audio id="audioPlayer"></audio>
 </body>
 
 </html>
