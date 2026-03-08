@@ -1,0 +1,130 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 1em;
+    /*16 px*/
+}
+
+
+.container {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    background-color: black;
+    width: 25em;
+    grid-template-columns: 1fr;
+}
+
+.playing {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.playing-image {
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+
+}
+
+.artist-name {
+    font-size: 1.2em;
+    margin: 0;
+    color: #868e96;
+    margin-top: 1em;
+    font-weight: 100;
+}
+
+.song-name {
+    font-size: 2em;
+    margin: 0;
+    color: #ffffff;
+    margin-top: .3em;
+}
+
+
+
+.progress-container {
+    display: flex;
+    width: 90%;
+    gap: 1em;
+    margin: 1em auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-container p {
+    color: white;
+}
+
+.progress-bar {
+    -webkit-appearance: none;
+    width: 100%;
+    height: .5em;
+    background-color: white;
+    border-radius: .3em;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: #2196f3;
+    border: 2px solid #fff;
+    margin-top: auto;
+    cursor: pointer;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 1em;
+}
+
+.controls svg {
+    fill: white;
+}
+
+.search svg {
+    fill: white;
+}
+
+.volume {
+    display: flex;
+    align-items: center;
+}
+
+.volume svg {
+    fill: white;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    width: 90%;
+
+}
+
+.search p {
+    color: white;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
