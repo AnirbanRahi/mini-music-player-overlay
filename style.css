@@ -50,7 +50,6 @@ body {
 }
 
 
-
 .progress-container {
     display: flex;
     width: 90%;
@@ -93,21 +92,12 @@ body {
     gap: 1em;
 }
 
-.controls svg {
-    fill: white;
-}
-
-.search svg {
-    fill: white;
-}
-
 .volume {
     display: flex;
     align-items: center;
-}
-
-.volume svg {
-    fill: white;
+    width: 60%;
+    margin: auto auto;
+    gap: .5em;
 }
 
 .search {
@@ -127,4 +117,52 @@ body {
 .search-box {
     display: flex;
     align-items: center;
+}
+
+.library {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 0 auto;
+    gap: .3em;
+
+    overflow-y: auto;
+    height: 20em;
+}
+
+.song-card {
+    display: flex;
+    align-items: center;
+    gap: .8em;
+    background-color: gray;
+    border-radius: .4em;
+    height: 2.5em;
+    padding: 0 .3em;
+}
+
+.song-card img {
+    height: 2em;
+    width: 2em;
+    border-radius: .4em;
+    flex-shrink: 0;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+    align-items: flex-start;
+}
+
+.details p:nth-child(1) {
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.details p:nth-child(2) {
+    font-size: .9em;
 }
