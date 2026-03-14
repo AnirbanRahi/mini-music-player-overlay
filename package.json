@@ -1,0 +1,14 @@
+{
+  "name": "mini-music-player-overlay",
+  "version": "1.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "music-metadata": "^11.12.3"
+  },
+  "devDependencies": {
+    "electron": "^41.0.2"
+  },
+  "scripts": {
+    "start": "electron ."
+  }
+}
