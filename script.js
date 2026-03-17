@@ -7,7 +7,10 @@ const song_name = document.querySelector(".song-name")
 const playing_image = document.querySelector(".playing-image")
 const play_svg = document.getElementById("play-svg")
 const pause_svg = document.getElementById("pause-svg")
-
+const progress = document.getElementById("progress")
+const progress_time = document.querySelector('.progress-time');
+const progress_time_ending = document.querySelector('.progress-time-ending');
+const volume = document.getElementById("volume-level")
 let currentSong = 0;
 let songsList = []
 
@@ -26,6 +29,18 @@ function loadSong(index) {
     pause_svg.style.display = "block"
 }
 
+audio.addEventListener('loadedmetadata', () => {
+    progress.max = audio.duration; 
+});
+
+audio.addEventListener('ended', () => {
+    currentSong++;
+    if (currentSong >= songsList.length) {
+        currentSong = 0; 
+    }
+    loadSong(currentSong);
+    audio.play();
+});
 
 play.addEventListener("click", function () {
     if (audio.paused) {
@@ -45,9 +60,9 @@ play.addEventListener("click", function () {
     }
 });
 
-skip_forward.addEventListener("click", function(){
+skip_forward.addEventListener("click", function () {
     currentSong++;
-    if (currentSong > songsList - 1) {
+    if (currentSong > songsList.length - 1) {
         currentSong = 0;
     }
     loadSong(currentSong);
@@ -62,6 +77,28 @@ skip_back.addEventListener("click", function () {
     loadSong(currentSong);
     audio.play();
 });
+
+audio.addEventListener('timeupdate', () => {
+    progress.value = audio.currentTime;
+
+    let minutes = Math.floor(audio.currentTime / 60);
+    let seconds = Math.floor(audio.currentTime % 60);
+    if (minutes < 10) minutes = '0' + minutes;
+    if (seconds < 10) seconds = '0' + seconds;
+
+    progress_time.textContent = `${minutes}:${seconds}`;
+});
+
+progress.oninput = function () {
+    audio.play();
+    audio.currentTime = progress.value;
+    play_svg.style.display = "none"
+    pause_svg.style.display = "block"
+}
+
+volume.oninput = () => {
+    audio.volume = Number(volume.value);
+};
 
 function renderLibrary() {
     const library = document.getElementById('library')
@@ -98,7 +135,15 @@ function renderLibrary() {
 
                 const time = document.createElement('span')
                 time.className = 'time'
-                time.textContent = song.durationStr || '0:00'
+
+                let duration = Math.floor(song.duration);
+                let m = Math.floor(duration / 60);
+                let s = duration % 60;
+
+                m = m < 10 ? '0' + m : m;
+                s = s < 10 ? '0' + s : s;
+
+                time.textContent = `${m}:${s}`
 
                 card.appendChild(serial)
                 card.appendChild(img)
@@ -108,6 +153,7 @@ function renderLibrary() {
                 card.addEventListener('click', () => {
                     currentSong = i
                     loadSong(currentSong)
+                    progress_time_ending.textContent = `${m}:${s}`
                     audio.play()
                 })
 
