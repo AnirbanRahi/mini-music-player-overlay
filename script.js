@@ -1,72 +1,120 @@
 const audio = document.getElementById("audio")
-const shuffle = document.getElementById("shuffle")
 const skip_back = document.getElementById("skip-back")
 const play = document.getElementById("play")
 const skip_forward = document.getElementById("skip-forward")
-const repeat = document.getElementById("repeat")
 const artist_name = document.querySelector(".artist-name")
 const song_name = document.querySelector(".song-name")
 const playing_image = document.querySelector(".playing-image")
-const play_svg = play.getElementById("play-svg")
-const pause_svg = play.getElementById("pause-svg")
-
-const songs = [
-    "resources/A Horse With No Name.mp3",
-    "resources/Bad Liar.mp3",
-    "resources/A Thousand Miles.mp3",
-    "resources/A Thousand Years.mp3",
-    "resources/After Dark x Sweater Weather.mp3",
-    "resources/Agora hills.mp3",
-    "resources/All The Stars.mp3",
-    "resources/Arrival To Earth.mp3",
-    "resources/As It Was.mp3",
-    "resources/Baby.mp3"
-
-]
+const play_svg = document.getElementById("play-svg")
+const pause_svg = document.getElementById("pause-svg")
 
 let currentSong = 0;
-let isPlaying = false;
+let songsList = []
 
+if (currentSong == 0) {
+    playing_image.src = "./music-logo.png";
+}
 
 function loadSong(index) {
-    audio.src = songs[index]
+    const song = songsList[index]
+    if (!song) return
+    audio.src = `file://${encodeURI(song.file.replace(/\\/g, '/'))}`
+    song_name.textContent = song.title
+    artist_name.textContent = song.artist
+    playing_image.src = song.cover || "./music-logo.png"
+    play_svg.style.display = "none"
+    pause_svg.style.display = "block"
 }
 
-loadSong(currentSong)
 
-play.onclick = function () {
+play.addEventListener("click", function () {
     if (audio.paused) {
-        audio.play();
-        play_svg.style.display = "none";
-        pause_svg.style.display = "block"
-
+        if (!audio.src && songsList.length > 0) {
+            currentSong = 0
+            loadSong(currentSong)
+            audio.play()
+        } else {
+            audio.play()
+            play_svg.style.display = "none"
+            pause_svg.style.display = "block"
+        }
     } else {
-        audio.pause();
-        play_svg.style.display = "block";
+        audio.pause()
+        play_svg.style.display = "block"
         pause_svg.style.display = "none"
     }
-}
+});
 
-skip_forward.onclick = function () {
+skip_forward.addEventListener("click", function(){
     currentSong++;
-    if (currentSong >= songs.length) {
-        currentSong = 0
+    if (currentSong > songsList - 1) {
+        currentSong = 0;
     }
-    loadSong(currentSong)
-    audio.play()
-}
+    loadSong(currentSong);
+    audio.play();
+});
 
-skip_back.onclick = function () {
-    currentSong--
+skip_back.addEventListener("click", function () {
+    currentSong--;
     if (currentSong < 0) {
-        currentSong = songs.length - 1
+        currentSong = songsList.length - 1;
     }
-    loadSong(currentSong)
-    audio.play()
+    loadSong(currentSong);
+    audio.play();
+});
 
+function renderLibrary() {
+    const library = document.getElementById('library')
+
+    fetch('songs.json')
+        .then(res => res.json())
+        .then(songs => {
+            songsList = songs
+            library.innerHTML = ""
+
+            songs.forEach((song, i) => {
+                const card = document.createElement('div')
+                card.className = 'song-card'
+
+                const serial = document.createElement('span')
+                serial.className = 'serial'
+                serial.textContent = i + 1
+
+                const img = document.createElement('img')
+                img.src = song.cover || "./music-logo.png"
+                img.alt = song.title
+
+                const details = document.createElement('div')
+                details.className = 'details'
+
+                const title = document.createElement('p')
+                title.textContent = song.title
+
+                const artist = document.createElement('p')
+                artist.textContent = song.artist
+
+                details.appendChild(title)
+                details.appendChild(artist)
+
+                const time = document.createElement('span')
+                time.className = 'time'
+                time.textContent = song.durationStr || '0:00'
+
+                card.appendChild(serial)
+                card.appendChild(img)
+                card.appendChild(details)
+                card.appendChild(time)
+
+                card.addEventListener('click', () => {
+                    currentSong = i
+                    loadSong(currentSong)
+                    audio.play()
+                })
+
+                library.appendChild(card)
+            })
+        })
+        .catch(err => console.error(err))
 }
 
-
-
-
-
+renderLibrary()
