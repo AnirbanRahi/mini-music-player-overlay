@@ -11,6 +11,8 @@ const progress = document.getElementById("progress")
 const progress_time = document.querySelector('.progress-time');
 const progress_time_ending = document.querySelector('.progress-time-ending');
 const volume = document.getElementById("volume-level")
+const searchInput = document.getElementById('search');
+
 let currentSong = 0;
 let songsList = []
 
@@ -159,6 +161,19 @@ function renderLibrary() {
 
                 library.appendChild(card)
             })
+
+            document.querySelectorAll('.song-card').forEach((card, index) => {
+                card.dataset.title = songsList[index].title.toLowerCase();
+            });
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+                document.querySelectorAll('.song-card').forEach(card => {
+                    card.style.display = card.dataset.title.startsWith(query) ? '' : 'none';
+                });
+            });
+
+
         })
         .catch(err => console.error(err))
 }
