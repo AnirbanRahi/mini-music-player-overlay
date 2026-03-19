@@ -113,11 +113,19 @@ svg:hover path {
     gap: 1em;
 }
 
+.settings {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+}
+
 .volume {
     display: flex;
     align-items: center;
-    width: 60%;
-    margin: 0 auto;
     gap: .5em;
 }
 
@@ -217,28 +225,35 @@ svg:hover path {
 }
 
 /* Margins Top*/
-.container{
+.container {
     margin-top: 1em;
 }
-.artist-name{
+
+.artist-name {
     margin-top: 1.5em;
 }
-.song-name{
+
+.song-name {
     margin-top: .2em;
 }
-.progress-container{
+
+.progress-container {
     margin-top: 1em;
 }
-.controls{
+
+.controls {
     margin-top: 1em;
 }
-.volume{
-    margin-top: .5em;
+
+.settings {
+    margin-top: 1em;
 }
-.search{
-    margin-top: 0em;
+
+.search {
+    margin-top: 1em;
 }
-.library{
+
+.library {
     margin-top: .6em;
 }
 
