@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "dependencies": {
+    "@electron/remote": "^2.1.3",
     "music-metadata": "^11.12.3"
   },
   "devDependencies": {
