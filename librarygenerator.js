@@ -9,29 +9,25 @@ function formatDuration(seconds) {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
+// Main function
 async function generateLibrary(folderPath) {
-    const songsDir = path.isAbsolute(folderPath)
-        ? folderPath
-        : path.join(__dirname, folderPath);
-
-    if (!fs.existsSync(songsDir)) {
-        console.error("Folder not found:", songsDir);
+    if (!folderPath || !fs.existsSync(folderPath)) {
+        console.error("Folder not found:", folderPath);
         return;
     }
 
-    const files = fs.readdirSync(songsDir).filter(f => f.endsWith(".mp3"));
+    const files = fs.readdirSync(folderPath).filter(f => f.endsWith(".mp3"));
     const songs = [];
 
     for (let i = 0; i < files.length; i++) {
-        const filePath = path.join(songsDir, files[i]);
+        const filePath = path.join(folderPath, files[i]);
         try {
             const metadata = await mm.parseFile(filePath, { native: true });
 
             let coverBase64 = null;
             if (metadata.common.picture && metadata.common.picture.length > 0) {
                 const pic = metadata.common.picture[0];
-                const buffer = Buffer.from(pic.data); 
-                coverBase64 = `data:${pic.format};base64,${buffer.toString("base64")}`;
+                coverBase64 = `data:${pic.format};base64,${Buffer.from(pic.data).toString("base64")}`;
             }
 
             const durationSeconds = metadata.format.duration || 0;
@@ -46,16 +42,14 @@ async function generateLibrary(folderPath) {
                 durationStr: formatDuration(durationSeconds),
                 index: i
             });
-
         } catch (err) {
             console.warn(`Failed to read metadata for ${files[i]}: ${err.message}`);
         }
     }
 
-    // write json file
     const outputFile = path.join(__dirname, "songs.json");
     fs.writeFileSync(outputFile, JSON.stringify(songs, null, 2));
     console.log(`Library generated with ${songs.length} songs at ${outputFile}`);
 }
 
-generateLibrary("D:\\Music");
+module.exports = { generateLibrary };
