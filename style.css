@@ -2,18 +2,51 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* outline: 1px solid red !important; */
+}
+
+:root {
+    --font: "Roboto", sans-serif;
+    --size-1: 0.8em;
+    --size-2: 1em;
+    --size-3: 1.2em;
+    --size-4: 2em;
+    --bg-color-1: linear-gradient(to bottom left, #7f7e7a 0%, #121212 50%, #000000 100%);
+    --bg-color-2: linear-gradient(to right, #8f8d83, #FFFFFF);
+    --bg-color-3: linear-gradient(to bottom, #8f8d83, #FFFFFF);
+    --color-1: #212529;
+    --color-2: #adb5bd;
+    --color-3: #f1f3f5;
+    --color-4: #ffffff;
+    --color-5: #b1b0ab;
+    --color-6: #efeee5;
+}
+
+html {
+    background: var(--bg-color-1);
+    background-size: 100% 100%;
 }
 
 html,
 body {
-    width: max-content;
-    height: max-content;
+    height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     font-size: 1em;
-    background-color: black;
+    min-height: 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
     /*16 px*/
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    width: 25em;
 }
 
 svg {
@@ -21,20 +54,14 @@ svg {
 }
 
 svg:hover path {
-
     fill: grey;
 }
 
-.container {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    background-color: black;
-    width: 25em;
-    grid-template-columns: 1fr;
-}
+
 
 .playing {
+    width: 90%;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -43,37 +70,43 @@ svg:hover path {
 }
 
 .playing-image {
-    border-radius: 50%;
+    border-radius: 5%;
     width: 10em;
     height: 10em;
-
+    display: block;
 }
 
 .artist-name {
-    font-size: 1.2em;
-    margin: 0;
+    width: 100%;
+    font-family: var(--font);
+    font-size: var(--size-3);
     color: #868e96;
-    font-weight: 100;
+    text-align: center;
 }
 
 .song-name {
-    font-size: 2em;
-    margin: 0;
+    width: 100%;
+    font-family: var(--font);
+    font-size: var(--size-4);
     color: #ffffff;
+    text-align: center;
 }
+
 
 
 .progress-container {
     display: flex;
     width: 90%;
     gap: 1em;
-    margin: 0 auto;
     align-items: center;
     justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .progress-container p {
     color: white;
+    font-family: var(--font);
 }
 
 .progress-bar {
@@ -87,7 +120,7 @@ svg:hover path {
 .progress-bar::-webkit-slider-runnable-track {
     height: .3em;
     border-radius: 0.25em;
-    background: linear-gradient(90deg, #748ffc, #364fc7);
+    background: var(--bg-color-2);
 }
 
 .progress-bar::-webkit-slider-thumb {
@@ -95,8 +128,8 @@ svg:hover path {
     width: 1em;
     height: 1em;
     border-radius: 50%;
-    background: #1864ab;
-    border: .1em solid #ffffff;
+    background: var(--color-3);
+    border: .1em solid var(--color-4);
     cursor: pointer;
     position: relative;
     top: 50%;
@@ -117,7 +150,6 @@ svg:hover path {
     width: 90%;
     display: flex;
     align-items: center;
-    justify-content: center;
     margin-left: auto;
     margin-right: auto;
     justify-content: space-between;
@@ -153,22 +185,24 @@ svg:hover path {
 #search-svg {
     position: absolute;
     right: 0rem;
-    fill: #9e9ea7;
+    fill: var(--color-1);
     height: 95%;
 }
 
 .search p {
-    color: white;
+    color: var(--color-4);
+    font-size: var(--size-3);
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    background: #ffffff;
+    background: var(--color-4);
     border-radius: .2em;
     height: 1.5em;
     width: 10em;
     position: relative;
+    padding-right: 5px;
 }
 
 .library {
@@ -181,14 +215,30 @@ svg:hover path {
     height: 20em;
 }
 
+.library-text {
+    font-family: var(--font);
+}
+
+/* 
+<div class="song-card">
+    <span class="serial">1</span>
+    <img src="./music-logo.png" alt="Song Title">
+    <div class="details">
+        <p>Song Title</p>
+        <p>Artist Name</p>
+    </div>
+    <span class="time">03:45</span>
+</div>
+*/
 .song-card {
     display: flex;
     align-items: center;
     gap: .8em;
-    background-color: rgb(215, 210, 210);
+    background-color: var(--color-5);
     border-radius: .4em;
-    height: 2.5em;
-    padding: 0 .3em;
+    min-height: 3em;
+    padding-left: .2em;
+    padding-right: .2em;
     width: 98%;
 }
 
@@ -199,34 +249,40 @@ svg:hover path {
     flex-shrink: 0;
 }
 
+.serial,
+.time {
+    font-family: var(--font);
+    flex-shrink: 0;
+}
+
 .details {
+    font-family: var(--font);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     flex-grow: 1;
     min-width: 0;
-    align-items: flex-start;
 }
 
 .details p:nth-child(1) {
-    font-size: 1.2em;
+    font-size: var(--size-2);
     white-space: nowrap;
     overflow: hidden;
-    width: 100%;
     text-overflow: ellipsis;
+    width: 100%;
 }
 
 .details p:nth-child(2) {
-    font-size: .9em;
+    font-size: var(--size-1);
     white-space: nowrap;
     overflow: hidden;
-    width: 100%;
     text-overflow: ellipsis;
+    width: 100%;
 }
 
 /* Margins Top*/
 .container {
-    margin-top: 1em;
+    padding-top: 3em;
 }
 
 .artist-name {
@@ -263,18 +319,18 @@ svg:hover path {
 }
 
 *::-webkit-scrollbar-track {
-    background: #364fc7;
+    background: var(--bg-color-3);
     border-radius: .5em;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: #748ffc;
+    background: var(--color-3);
     border-radius: .5em;
     transition: background 0.2s ease;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: #1864ab;
+    background: var(--color-4);
 }
 
 /* Smooth Scrolling */
