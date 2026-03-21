@@ -11,14 +11,10 @@ const progress = document.getElementById("progress")
 const progress_time = document.querySelector('.progress-time');
 const progress_time_ending = document.querySelector('.progress-time-ending');
 const volume = document.getElementById("volume-level")
-const searchInput = document.getElementById('search');
+const searchInput = document.getElementById('search-input');
 
 let currentSong = 0;
 let songsList = []
-
-if (currentSong == 0) {
-    playing_image.src = "./music-logo.png";
-}
 
 function loadSong(index) {
     const song = songsList[index]
@@ -32,13 +28,13 @@ function loadSong(index) {
 }
 
 audio.addEventListener('loadedmetadata', () => {
-    progress.max = audio.duration; 
+    progress.max = audio.duration;
 });
 
 audio.addEventListener('ended', () => {
     currentSong++;
     if (currentSong >= songsList.length) {
-        currentSong = 0; 
+        currentSong = 0;
     }
     loadSong(currentSong);
     audio.play();
