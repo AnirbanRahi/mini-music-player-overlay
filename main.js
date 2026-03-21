@@ -1,18 +1,20 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
-
+const mm = require('music-metadata'); 
+const { generateLibrary } = require('./librarygenerator'); 
 const defaultState = {
-    sources: [],
+    sources: null,
     currentTrack: null,
-    volume: 1
+    volume: 1,
+    windowBounds: null
 };
 
 const isDev = !app.isPackaged;
 
 const statePath = isDev
-    ? path.join(__dirname, "appState.json")   
-    : path.join(app.getPath("userData"), "appState.json"); 
+    ? path.join(__dirname, "appState.json")
+    : path.join(app.getPath("userData"), "appState.json");
 
 function ensureStateFile() {
     if (!fs.existsSync(statePath)) {
@@ -24,7 +26,7 @@ function ensureStateFile() {
         const data = fs.readFileSync(statePath, "utf-8");
         return { ...defaultState, ...JSON.parse(data) };
     } catch (err) {
-        
+
         fs.writeFileSync(statePath, JSON.stringify(defaultState, null, 2));
         return defaultState;
     }
@@ -36,9 +38,7 @@ function saveState(state) {
 
 let appState;
 
-ipcMain.handle('get-state-path', () => {
-    return statePath;
-});
+ipcMain.handle('get-state-path', () => statePath);
 
 ipcMain.handle('dialog:openDirectory', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -59,7 +59,7 @@ function createWindow() {
         }
     });
 
-    
+
     mainWindow.loadFile('index.html');
 
     // Resize window to fit the .container after HTML loads
@@ -78,9 +78,21 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(() => {
-    
+app.whenReady().then(async () => {
     appState = ensureStateFile();
+
+    const songsFile = path.join(__dirname, "songs.json");
+    if (!fs.existsSync(songsFile) || fs.statSync(songsFile).size === 0) {
+        if (!appState.sources) {
+            console.error("No source folder selected in app state. Cannot generate library.");
+        } else {
+            console.log("Generating library...");
+            await generateLibrary(appState.sources);
+            console.log("Library generation complete.");
+        }
+    } else {
+        console.log("songs.json exists, skipping library generation.");
+    }
 
     createWindow();
 });
