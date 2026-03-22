@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const mm = require('music-metadata');
@@ -74,13 +74,15 @@ ipcMain.handle('update-library', async (event, folderPath) => {
 ipcMain.handle('get-songs-path', () => {
     return path.join(outputDir, "songs.json");
 });
-
+let mainWindow;
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         frame: false,          // keep window controls
         transparent: false,   // must be false to see frame
         resizable: false,     // optional: prevent user resizing
         show: false,
+        skipTaskbar: true,
+        alwaysOnTop: true,
         x: appState.windowBounds?.x, 
         y: appState.windowBounds?.y,
         backgroundColor: '#000000',
@@ -89,6 +91,10 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: true
         }
+    });
+
+    mainWindow.on('blur', () => {
+        mainWindow.hide();
     });
 
 
@@ -131,6 +137,12 @@ app.whenReady().then(async () => {
     }
 
     createWindow();
+
+    globalShortcut.register('Control+Alt+M', () => {
+        if (!mainWindow) return;
+        mainWindow.show();
+        mainWindow.focus(); // allows interaction with overlay
+    });
 });
 
 app.on('window-all-closed', () => {
