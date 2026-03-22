@@ -1,8 +1,8 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const mm = require('music-metadata'); 
-const { generateLibrary } = require('./librarygenerator'); 
+const mm = require('music-metadata');
+const { generateLibrary } = require('./librarygenerator');
 const defaultState = {
     sources: null,
     currentTrack: null,
@@ -15,6 +15,10 @@ const isDev = !app.isPackaged;
 const statePath = isDev
     ? path.join(__dirname, "appState.json")
     : path.join(app.getPath("userData"), "appState.json");
+
+const outputDir = isDev
+    ? __dirname
+    : app.getPath("userData");
 
 function ensureStateFile() {
     if (!fs.existsSync(statePath)) {
@@ -48,11 +52,29 @@ ipcMain.handle('dialog:openDirectory', async () => {
     return filePaths[0];
 });
 
+ipcMain.handle('update-library', async (event, folderPath) => {
+    console.log("Main process received path:", folderPath);
+
+    // Reload fresh state (important)
+    const currentState = ensureStateFile();
+
+    currentState.sources = folderPath;
+
+    saveState(currentState); // use your helper
+
+    // Generate library
+    await generateLibrary(folderPath, outputDir);
+
+    return true;
+});
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         frame: true,          // keep window controls
         transparent: false,   // must be false to see frame
         resizable: false,     // optional: prevent user resizing
+        show: false,
+        backgroundColor: '#000000',
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -81,13 +103,13 @@ function createWindow() {
 app.whenReady().then(async () => {
     appState = ensureStateFile();
 
-    const songsFile = path.join(__dirname, "songs.json");
+    const songsFile = path.join(outputDir, "songs.json");
     if (!fs.existsSync(songsFile) || fs.statSync(songsFile).size === 0) {
         if (!appState.sources) {
             console.error("No source folder selected in app state. Cannot generate library.");
         } else {
             console.log("Generating library...");
-            await generateLibrary(appState.sources);
+            await generateLibrary(appState.sources, outputDir);
             console.log("Library generation complete.");
         }
     } else {

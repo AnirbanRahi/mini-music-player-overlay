@@ -1,32 +1,21 @@
 const { ipcRenderer } = require('electron');
-const fs = require('fs');
+
 
 async function selectFolder() {
     try {
-
-        const statePath = await ipcRenderer.invoke('get-state-path');
-
         const selectedPath = await ipcRenderer.invoke('dialog:openDirectory');
-
         if (!selectedPath) return;
 
-        let currentState = { sources: [], currentTrack: null, volume: 1 };
-        if (fs.existsSync(statePath)) {
-            const data = fs.readFileSync(statePath, 'utf-8');
-            currentState = JSON.parse(data);
-        }
+        const result = await ipcRenderer.invoke('update-library', selectedPath);
 
-        if (currentState.sources !== selectedPath) {
-            currentState.sources = selectedPath; 
-            fs.writeFileSync(statePath, JSON.stringify(currentState, null, 2));
-            console.log("State updated. Path saved to:", statePath);
-            alert("Folder set successfully!");
-        } else {
-            alert("This folder is already selected.");
+        if (result) {
+            alert("Library updated!");
+            if (result) {
+                renderLibrary();
+            }
         }
-
     } catch (err) {
-        console.error("Failed to update app state:", err);
+        console.error(err);
     }
 }
 
