@@ -10,7 +10,7 @@ function formatDuration(seconds) {
 }
 
 // Main function
-async function generateLibrary(folderPath) {
+async function generateLibrary(folderPath, outputDir) {
     if (!folderPath || !fs.existsSync(folderPath)) {
         console.error("Folder not found:", folderPath);
         return;
@@ -47,7 +47,7 @@ async function generateLibrary(folderPath) {
         }
     }
 
-    const outputFile = path.join(__dirname, "songs.json");
+    const outputFile = path.join(outputDir, "songs.json");
     fs.writeFileSync(outputFile, JSON.stringify(songs, null, 2));
     console.log(`Library generated with ${songs.length} songs at ${outputFile}`);
 }
