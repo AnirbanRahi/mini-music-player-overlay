@@ -68,6 +68,10 @@ ipcMain.handle('update-library', async (event, folderPath) => {
     return true;
 });
 
+ipcMain.handle('get-songs-path', () => {
+    return path.join(outputDir, "songs.json");
+});
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         frame: true,          // keep window controls
@@ -76,8 +80,9 @@ function createWindow() {
         show: false,
         backgroundColor: '#000000',
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: false,
+            contextIsolation: true
         }
     });
 
