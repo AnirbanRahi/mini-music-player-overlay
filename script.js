@@ -116,3 +116,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Library could not be loaded at startup:", err);
     }
 });
+
+
+
+const display = document.getElementById('hotkey-display');
+const button = document.getElementById('hotkey-button');
+
+let editing = false;
+let currentHotkey = "";
+
+// Load current hotkey
+async function loadHotkey() {
+    const hotkey = await window.electronAPI.getHotkey();
+    display.value = hotkey;
+}
+
+// 🔥 Capture key combo in real time
+display.addEventListener('keydown', (e) => {
+    if (!editing) return;
+
+    e.preventDefault(); // stop typing letters
+
+    const keys = [];
+
+    if (e.ctrlKey) keys.push('Control');
+    if (e.shiftKey) keys.push('Shift');
+    if (e.altKey) keys.push('Alt');
+    if (e.metaKey) keys.push('Command');
+
+    // Add main key (ignore pure modifiers)
+    if (!['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) {
+        const keyName = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+        keys.push(keyName);
+    }
+
+    currentHotkey = keys.join('+');
+    display.value = currentHotkey; // 🔥 real-time update
+});
+
+// Button logic (Change ↔ OK)
+button.addEventListener('click', async () => {
+    if (!editing) {
+        // Start editing
+        display.value = "";
+        display.placeholder = "Press keys...";
+        display.readOnly = false;
+        display.focus();
+        button.textContent = "OK";
+        editing = true;
+    } else {
+        // Save hotkey
+        const newHotkey = currentHotkey || display.value.trim();
+
+        if (newHotkey) {
+            try {
+                const registered = await window.electronAPI.updateHotkey(newHotkey);
+                display.value = registered;
+            } catch (err) {
+                alert("Failed to register hotkey. Use something like Ctrl+Alt+M");
+                display.value = await window.electronAPI.getHotkey();
+            }
+        } else {
+            display.value = await window.electronAPI.getHotkey();
+        }
+
+        display.readOnly = true;
+        button.textContent = "Change Hk";
+        editing = false;
+        currentHotkey = "";
+    }
+});
+
+loadHotkey();

@@ -5,7 +5,8 @@ const mm = require('music-metadata');
 const { generateLibrary } = require('./librarygenerator');
 const defaultState = {
     sources: null,
-    windowBounds: null
+    windowBounds: null,
+    hotkey:"Control+Alt+M"
 };
 
 const isDev = !app.isPackaged;
@@ -120,6 +121,38 @@ function createWindow() {
     });
 }
 
+let registeredHotkey;
+
+function registerHotkey(hotkey) {
+    if (registeredHotkey) {
+        globalShortcut.unregister(registeredHotkey);
+    }
+    registeredHotkey = hotkey;
+    globalShortcut.register(hotkey, () => {
+        if (!mainWindow) return;
+        mainWindow.show();
+        mainWindow.focus();
+    });
+}
+
+ipcMain.handle('get-hotkey', () => {
+    return appState.hotkey;
+});
+
+ipcMain.handle('update-hotkey', (event, newHotkey) => {
+    const state = ensureStateFile(); // always get fresh state
+
+    state.hotkey = newHotkey;
+
+    saveState(state);
+
+    appState = state; // keep global in sync
+
+    registerHotkey(newHotkey);
+
+    return newHotkey;
+});
+
 app.whenReady().then(async () => {
     appState = ensureStateFile();
 
@@ -138,11 +171,7 @@ app.whenReady().then(async () => {
 
     createWindow();
 
-    globalShortcut.register('Control+Alt+M', () => {
-        if (!mainWindow) return;
-        mainWindow.show();
-        mainWindow.focus(); // allows interaction with overlay
-    });
+    registerHotkey(appState.hotkey);
 });
 
 app.on('window-all-closed', () => {

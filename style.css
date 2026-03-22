@@ -38,9 +38,11 @@ body {
     overflow: hidden;
     /*16 px*/
 }
-.titlebar{
+
+.titlebar {
     text-align: center;
 }
+
 .title {
     font-family: var(--font);
     font-size: var(--size-4);
@@ -169,6 +171,7 @@ svg:hover path {
     display: flex;
     align-items: center;
     gap: .5em;
+    width: 5em;
 }
 
 .search {
@@ -291,9 +294,10 @@ svg:hover path {
 }
 
 /* Margins Top*/
-.titlebar{
+.titlebar {
     padding-top: .5em;
 }
+
 .container {
     padding-top: 1em;
 }
@@ -349,4 +353,83 @@ svg:hover path {
 /* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* 
+<div class="hotkey-container">
+                <span class="hotkey-label">Hotkey:</span>
+                <input type="text" id="hotkey-display" value="" readonly />
+                <button id="hotkey-button">Change</button>
+            </div> */
+
+.hotkey-container {
+    display: flex;
+    align-items: center;
+
+    gap: 0;
+    /* no gaps → unified look */
+
+    width: 60%;
+    max-width: 13em;
+
+    border-radius: 6px;
+    overflow: hidden;
+    /* 🔥 merges children visually */
+
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Label */
+.hotkey-label {
+    padding: 4px 6px;
+
+    font-size: var(--size-1);
+    font-family: var(--font);
+
+    background: rgba(255, 255, 255, 0.08);
+    /* same as container */
+    color: var(--color-3);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    /* subtle divider */
+}
+
+/* Input */
+#hotkey-display {
+    flex: 1;
+    min-width: 0;
+
+    padding: 4px 6px;
+
+    font-size: var(--size-1);
+    font-family: var(--font);
+    text-align: center;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    /* 🔥 blends into container */
+    color: var(--color-4);
+}
+
+/* Button */
+#hotkey-button {
+    padding: 4px 8px;
+
+    font-size: var(--size-1);
+    font-family: var(--font);
+
+    border: none;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--color-3);
+
+    cursor: pointer;
+}
+
+/* Button hover */
+#hotkey-button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
