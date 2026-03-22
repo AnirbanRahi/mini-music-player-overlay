@@ -5,8 +5,6 @@ const mm = require('music-metadata');
 const { generateLibrary } = require('./librarygenerator');
 const defaultState = {
     sources: null,
-    currentTrack: null,
-    volume: 1,
     windowBounds: null
 };
 
@@ -83,6 +81,8 @@ function createWindow() {
         transparent: false,   // must be false to see frame
         resizable: false,     // optional: prevent user resizing
         show: false,
+        x: appState.windowBounds?.x, 
+        y: appState.windowBounds?.y,
         backgroundColor: '#000000',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -93,7 +93,11 @@ function createWindow() {
 
 
     mainWindow.loadFile('index.html');
-
+    mainWindow.on('move', () => {
+        const bounds = mainWindow.getBounds();
+        appState.windowBounds = { x: bounds.x, y: bounds.y };
+        saveState(appState);
+    });
     // Resize window to fit the .container after HTML loads
     mainWindow.webContents.on('did-finish-load', () => {
         setTimeout(() => {  // small delay to ensure CSS is applied
@@ -103,7 +107,7 @@ function createWindow() {
                 ({ width: Math.ceil(rect.width), height: Math.ceil(rect.height) });
             `).then(size => {
                 mainWindow.setContentSize(size.width, size.height);
-                mainWindow.center();
+                // mainWindow.center();
                 mainWindow.show(); // show window after resizing
             });
         }, 50);
