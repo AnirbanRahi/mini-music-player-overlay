@@ -38,6 +38,16 @@ body {
     overflow: hidden;
     /*16 px*/
 }
+.titlebar{
+    text-align: center;
+}
+.title {
+    font-family: var(--font);
+    font-size: var(--size-4);
+    color: #ffffff;
+    text-align: center;
+    -webkit-app-region: drag;
+}
 
 .container {
     display: grid;
@@ -281,8 +291,11 @@ svg:hover path {
 }
 
 /* Margins Top*/
+.titlebar{
+    padding-top: .5em;
+}
 .container {
-    padding-top: 3em;
+    padding-top: 1em;
 }
 
 .artist-name {

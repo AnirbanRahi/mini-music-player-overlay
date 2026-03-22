@@ -79,7 +79,7 @@ ipcMain.handle('get-songs-path', () => {
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        frame: true,          // keep window controls
+        frame: false,          // keep window controls
         transparent: false,   // must be false to see frame
         resizable: false,     // optional: prevent user resizing
         show: false,
