@@ -52,6 +52,11 @@ ipcMain.handle('dialog:openDirectory', async () => {
     return filePaths[0];
 });
 
+ipcMain.on('reload-window', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (win) win.reload();   
+});
+
 ipcMain.handle('update-library', async (event, folderPath) => {
     console.log("Main process received path:", folderPath);
 

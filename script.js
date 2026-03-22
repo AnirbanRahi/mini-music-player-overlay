@@ -12,12 +12,12 @@ const progress_time = document.querySelector('.progress-time');
 const progress_time_ending = document.querySelector('.progress-time-ending');
 const volume = document.getElementById("volume-level")
 const searchInput = document.getElementById('search-input');
+const refreshBtn = document.getElementById("refresh");
 
-let currentSong = 0;
-let songsList = []
+window.currentSong = 0;
 
 function loadSong(index) {
-    const song = songsList[index]
+    const song = window.songsList[index];
     if (!song) return
     audio.src = `file://${encodeURI(song.file.replace(/\\/g, '/'))}`
     song_name.textContent = song.title
@@ -40,7 +40,12 @@ audio.addEventListener('ended', () => {
     audio.play();
 });
 
-play.addEventListener("click", function () {
+play.addEventListener("click", function (e) {
+    if (songsList.length === 0) {
+        play_svg.style.display = "block";
+        pause_svg.style.display = "none";
+        return;
+    }
     if (audio.paused) {
         if (!audio.src && songsList.length > 0) {
             currentSong = 0
@@ -98,9 +103,12 @@ volume.oninput = () => {
     audio.volume = Number(volume.value);
 };
 
+refreshBtn.addEventListener("click", () => {
+    window.electronAPI.reloadWindow();
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // renderLibrary will fetch songs.json if it exists
         if (window.renderLibrary) {
             await window.renderLibrary();
         }
