@@ -166,6 +166,14 @@ let tray;
 app.whenReady().then(async () => {
     appState = ensureStateFile();
 
+    if (!isDev) {
+        app.setLoginItemSettings({
+            openAtLogin: true,
+            path: process.execPath,
+            args: []
+        });
+    }
+
     const songsFile = path.join(outputDir, "songs.json");
     if (!fs.existsSync(songsFile) || fs.statSync(songsFile).size === 0) {
         if (!appState.sources) {
