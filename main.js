@@ -185,7 +185,9 @@ app.whenReady().then(async () => {
     
     let isQuitting = false;
 
-    tray = new Tray(iconPath);
+    const tmpIcon = path.join(app.getPath('temp'), 'icon.ico');
+    fs.copyFileSync(path.join(__dirname, 'assets/icon.ico'), tmpIcon);
+    tray = new Tray(tmpIcon);
 
     const contextMenu = Menu.buildFromTemplate([
         {
