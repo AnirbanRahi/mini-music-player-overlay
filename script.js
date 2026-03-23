@@ -131,7 +131,6 @@ async function loadHotkey() {
     display.value = hotkey;
 }
 
-// 🔥 Capture key combo in real time
 display.addEventListener('keydown', (e) => {
     if (!editing) return;
 
@@ -151,7 +150,7 @@ display.addEventListener('keydown', (e) => {
     }
 
     currentHotkey = keys.join('+');
-    display.value = currentHotkey; // 🔥 real-time update
+    display.value = currentHotkey; 
 });
 
 // Button logic (Change ↔ OK)
@@ -181,7 +180,7 @@ button.addEventListener('click', async () => {
         }
 
         display.readOnly = true;
-        button.textContent = "Change Hk";
+        button.textContent = "Edit";
         editing = false;
         currentHotkey = "";
     }

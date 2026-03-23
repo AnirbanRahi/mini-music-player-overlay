@@ -11,6 +11,7 @@
     --size-2: 1em;
     --size-3: 1.2em;
     --size-4: 2em;
+    --size-5: 1.8em;
     --bg-color-1: linear-gradient(to bottom left, #7f7e7a 0%, #121212 50%, #000000 100%);
     --bg-color-2: linear-gradient(to right, #8f8d83, #FFFFFF);
     --bg-color-3: linear-gradient(to bottom, #8f8d83, #FFFFFF);
@@ -171,7 +172,7 @@ svg:hover path {
     display: flex;
     align-items: center;
     gap: .5em;
-    width: 5em;
+    width: 6.5em;
 }
 
 .search {
@@ -232,17 +233,6 @@ svg:hover path {
     font-family: var(--font);
 }
 
-/* 
-<div class="song-card">
-    <span class="serial">1</span>
-    <img src="./music-logo.png" alt="Song Title">
-    <div class="details">
-        <p>Song Title</p>
-        <p>Artist Name</p>
-    </div>
-    <span class="time">03:45</span>
-</div>
-*/
 .song-card {
     display: flex;
     align-items: center;
@@ -355,81 +345,45 @@ html {
     scroll-behavior: smooth;
 }
 
-/* 
-<div class="hotkey-container">
-                <span class="hotkey-label">Hotkey:</span>
-                <input type="text" id="hotkey-display" value="" readonly />
-                <button id="hotkey-button">Change</button>
-            </div> */
 
 .hotkey-container {
     display: flex;
     align-items: center;
-
     gap: 0;
-    /* no gaps → unified look */
-
-    width: 60%;
-    max-width: 13em;
-
+    height: var(--size-5);
+    width: 45%;
+    justify-content: space-between;
     border-radius: 6px;
     overflow: hidden;
-    /* 🔥 merges children visually */
-
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:#495057;
 }
 
-/* Label */
-.hotkey-label {
-    padding: 4px 6px;
 
-    font-size: var(--size-1);
-    font-family: var(--font);
-
-    background: rgba(255, 255, 255, 0.08);
-    /* same as container */
-    color: var(--color-3);
-
-    border-right: 1px solid rgba(255, 255, 255, 0.12);
-    /* subtle divider */
-}
-
-/* Input */
 #hotkey-display {
     flex: 1;
+    padding-left: 0.5em;
     min-width: 0;
-
-    padding: 4px 6px;
-
     font-size: var(--size-1);
     font-family: var(--font);
-    text-align: center;
-
     border: none;
     outline: none;
-
     background: transparent;
-    /* 🔥 blends into container */
     color: var(--color-4);
 }
 
-/* Button */
 #hotkey-button {
-    padding: 4px 8px;
-
+    height: var(--size-5);
     font-size: var(--size-1);
     font-family: var(--font);
-
     border: none;
-
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--color-3);
-
+    background: var(--color-4);
+    color: var(--color-1);
     cursor: pointer;
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+    border-radius: .5em;
 }
 
-/* Button hover */
 #hotkey-button:hover {
     background: rgba(255, 255, 255, 0.2);
 }
