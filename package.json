@@ -1,15 +1,52 @@
 {
   "name": "mini-music-player-overlay",
   "version": "1.0.0",
+  "description": "Mini Music Player Overlay",
+  "author": "Your Name",
   "main": "main.js",
   "dependencies": {
     "@electron/remote": "^2.1.3",
     "music-metadata": "^11.12.3"
   },
   "devDependencies": {
-    "electron": "^41.0.2"
+    "electron": "^41.0.3",
+    "electron-builder": "^26.8.1"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+"build": {
+  "appId": "com.rahi.minimusicplayeroverlay",
+  "productName": "Mini Music Player Overlay",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "**/*",
+    "!node_modules/.cache/**"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "icon": "assets/icon.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Mini Music Player Overlay",
+    "artifactName": "${productName}-Setup-${version}.exe"
   }
+}
 }
