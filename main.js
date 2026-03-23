@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, globalShortcut } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain, dialog, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const mm = require('music-metadata');
@@ -6,7 +6,7 @@ const { generateLibrary } = require('./librarygenerator');
 const defaultState = {
     sources: null,
     windowBounds: null,
-    hotkey:"Control+Alt+M"
+    hotkey: "Control+Alt+M"
 };
 
 const isDev = !app.isPackaged;
@@ -18,6 +18,11 @@ const statePath = isDev
 const outputDir = isDev
     ? __dirname
     : app.getPath("userData");
+
+
+const iconPath = isDev
+    ? path.join(__dirname, 'assets/icon.ico')
+    : path.join(process.resourcesPath, 'assets/icon.ico');
 
 function ensureStateFile() {
     if (!fs.existsSync(statePath)) {
@@ -53,7 +58,7 @@ ipcMain.handle('dialog:openDirectory', async () => {
 
 ipcMain.on('reload-window', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
-    if (win) win.reload();   
+    if (win) win.reload();
 });
 
 ipcMain.handle('update-library', async (event, folderPath) => {
@@ -84,7 +89,7 @@ function createWindow() {
         show: false,
         skipTaskbar: true,
         alwaysOnTop: true,
-        x: appState.windowBounds?.x, 
+        x: appState.windowBounds?.x,
         y: appState.windowBounds?.y,
         backgroundColor: '#000000',
         webPreferences: {
@@ -98,6 +103,10 @@ function createWindow() {
         mainWindow.hide();
     });
 
+    mainWindow.on('close', (e) => {
+        e.preventDefault();
+        mainWindow.hide();
+    });
 
     mainWindow.loadFile('index.html');
     mainWindow.on('move', () => {
@@ -152,6 +161,7 @@ ipcMain.handle('update-hotkey', (event, newHotkey) => {
 
     return newHotkey;
 });
+let tray;
 
 app.whenReady().then(async () => {
     appState = ensureStateFile();
@@ -172,6 +182,49 @@ app.whenReady().then(async () => {
     createWindow();
 
     registerHotkey(appState.hotkey);
+
+    let isQuitting = false;  
+
+    tray = new Tray(iconPath);
+
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Show',
+            click: () => { mainWindow.show(); mainWindow.focus(); }
+        },
+        {
+            label: 'Hide',
+            click: () => mainWindow.hide()
+        },
+        {
+            label: 'Quit',
+            click: () => {
+                isQuitting = true;      // allow proper quit
+                mainWindow.removeAllListeners('close'); // optional if using remove listeners method
+                app.quit();
+            }
+        }
+    ]);
+
+    tray.setToolTip('Musiclay');
+    tray.setContextMenu(contextMenu);
+
+    tray.on('click', () => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+            mainWindow.focus();
+        }
+    });
+
+    // Update mainWindow close listener to respect isQuitting
+    mainWindow.on('close', (e) => {
+        if (!isQuitting) {
+            e.preventDefault();
+            mainWindow.hide();
+        }
+    });
 });
 
 app.on('window-all-closed', () => {
