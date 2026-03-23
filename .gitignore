@@ -1,0 +1,5 @@
+node_modules/
+songs.json
+appState.json
+dist/
+.vscode/
