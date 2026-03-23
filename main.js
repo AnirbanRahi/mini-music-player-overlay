@@ -182,8 +182,8 @@ app.whenReady().then(async () => {
     createWindow();
 
     registerHotkey(appState.hotkey);
-
-    let isQuitting = false;  
+    
+    let isQuitting = false;
 
     tray = new Tray(iconPath);
 

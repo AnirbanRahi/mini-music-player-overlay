@@ -289,11 +289,11 @@ svg:hover path {
 }
 
 .container {
-    padding-top: 1em;
+    padding-top: .5em;
 }
 
 .artist-name {
-    margin-top: 1.5em;
+    margin-top: 1em;
 }
 
 .song-name {
@@ -305,19 +305,19 @@ svg:hover path {
 }
 
 .controls {
-    margin-top: 1em;
+    margin-top: .5em;
 }
 
 .settings {
-    margin-top: 1em;
+    margin-top: .5em;
 }
 
 .search {
-    margin-top: 1em;
+    margin-top: .5em;
 }
 
 .library {
-    margin-top: .6em;
+    margin-top: .5em;
 }
 
 *::-webkit-scrollbar {
@@ -353,9 +353,10 @@ html {
     height: var(--size-5);
     width: 45%;
     justify-content: space-between;
-    border-radius: 6px;
+    border-radius: .5em;
     overflow: hidden;
-    background:#495057;
+    background: #495057;
+    border: none;
 }
 
 
@@ -372,16 +373,15 @@ html {
 }
 
 #hotkey-button {
-    height: var(--size-5);
+    height: 27px;
     font-size: var(--size-1);
     font-family: var(--font);
     border: none;
     background: var(--color-4);
     color: var(--color-1);
     cursor: pointer;
-    padding-right: 0.5em;
-    padding-left: 0.5em;
     border-radius: .5em;
+    padding: 0 0.5em;
 }
 
 #hotkey-button:hover {
